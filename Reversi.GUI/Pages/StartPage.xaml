@@ -1,0 +1,19 @@
+﻿<Page x:Class="Reversi.GUI.Pages.StartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Reversi.GUI.Pages"
+      mc:Ignorable="d" 
+      Title="StartPage" Height="720" Width="1200">
+
+    <Grid>
+        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36" FontFamily="Arial Black" Target="{Binding ElementName=Difficulties}" Margin="300,10,300,375" >Select the game difficulty</Label>
+        <ComboBox Name="Difficulties" Width="200" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedIndex="1"  >
+            <TextBlock>Easy</TextBlock>
+            <TextBlock>Medium</TextBlock>
+            <TextBlock>Hard</TextBlock>
+        </ComboBox>
+        <Button Name="SubmitButton" Width="200" Height="60" Content="Submit" FontSize="27" FontFamily="Arial Black" Click="SubmitButton_Click" Margin="500,542,500,78"></Button>
+    </Grid>
+</Page>

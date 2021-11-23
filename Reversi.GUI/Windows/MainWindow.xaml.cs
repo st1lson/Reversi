@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Reversi.GUI.Pages;
 
 namespace Reversi.GUI.Windows
 {
@@ -10,6 +11,7 @@ namespace Reversi.GUI.Windows
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Content = new StartPage();
         }
     }
 }
