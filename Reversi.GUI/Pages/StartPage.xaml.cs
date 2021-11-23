@@ -5,9 +5,6 @@ using System.Windows.Navigation;
 
 namespace Reversi.GUI.Pages
 {
-    /// <summary>
-    /// Interaction logic for StartPage.xaml
-    /// </summary>
     public partial class StartPage : Page
     {
         private Difficulty _difficulty;
