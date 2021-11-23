@@ -21,7 +21,7 @@ namespace Reversi.GUI.Pages
             _ = NavigationService.Navigate(new GamePage(_difficulty));
         }
 
-        private Difficulty SelectDifficulty(int index) => index switch
+        private static Difficulty SelectDifficulty(int index) => index switch
         {
             0 => Difficulty.Easy,
             1 => Difficulty.Medium,

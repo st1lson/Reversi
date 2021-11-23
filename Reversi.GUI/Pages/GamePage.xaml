@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:Core="clr-namespace:Reversi.GUI.Core"
       mc:Ignorable="d" 
-      Title="GamePage" Height="720" Width="1200">
+      Title="GamePage" Height="1000" Width="1600">
 
     <Grid x:Name="Container">
         <Grid.DataContext>
@@ -20,7 +20,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Path=Sign}" 
+                    <Button
                         IsEnabled="{Binding Path=CanSelect}"
                         Click="CellClick"/>
                 </DataTemplate>

@@ -5,15 +5,29 @@ namespace Reversi.GUI.Core
 {
     public class BoardCell : INotifyPropertyChanged
     {
-        public string? Sign { get; set; }
+        private bool _canSelect = true;
 
-        public bool CanSelect { get; set; }
+        public bool CanSelect
+        {
+            get => _canSelect;
+            set
+            {
+                _canSelect = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged is not null)
+            {
+                PropertyChanged(
+                                this,
+                                new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
