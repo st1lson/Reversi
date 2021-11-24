@@ -6,11 +6,6 @@
       xmlns:Core="clr-namespace:Reversi.GUI.Core"
       mc:Ignorable="d" 
       Title="GamePage" Height="1000" Width="1600">
-    <Page.Resources>
-        <Image x:Key="WhiteChip" Source="{StaticResource White}"/>
-        <Image x:Key="BlackChip" Source="{StaticResource Black}"/>
-        <Image x:Key="EmptyChip" Source="{StaticResource Empty}"/>
-    </Page.Resources>
     <Grid x:Name="Container">
         <Grid.DataContext>
             <Core:Board Rows="8" Columns="8"/>
@@ -25,9 +20,9 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button
-                        Content="{Binding Image, Converter={StaticResource ImageConverter}}"
                         IsEnabled="{Binding Path=CanSelect}"
                         Click="CellClick">
+                        <Image Source="{Binding Chip, Converter={StaticResource ImageConverter}}"></Image>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
