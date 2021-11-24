@@ -1,4 +1,5 @@
 ﻿using Reversi.GUI.Core;
+using Reversi.GUI.Core.Enums;
 using Reversi.Lib.Enums;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,12 +15,7 @@ namespace Reversi.GUI.Pages
         {
             InitializeComponent();
             _difficulty = difficulty;
-            _board = new();
-            for (int i = 0; i < 64; i++)
-            {
-                _board.Cells.Add(new BoardCell());
-            }
-
+            _board = InitBoard();
             Board.ItemsSource = _board.Cells;
         }
 
@@ -27,12 +23,19 @@ namespace Reversi.GUI.Pages
         {
             Button button = (Button)sender;
             BoardCell currentCell = (BoardCell)button.DataContext;
-            if (sender is null || ((Button)sender).DataContext as BoardCell is null)
+            currentCell.CanSelect = false;
+            currentCell.Chip = Chip.White;
+        }
+
+        private static Board InitBoard()
+        {
+            Board board = new();
+            for (int i = 0; i < 64; i++)
             {
-                return;
+                board.Cells.Add(new BoardCell());
             }
 
-            currentCell.CanSelect = false;
+            return board;
         }
     }
 }

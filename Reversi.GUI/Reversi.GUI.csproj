@@ -8,7 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\black.png" />
+    <None Remove="Images\white.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Reversi.Lib\Reversi.Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\black.png" />
+    <Resource Include="Images\white.png" />
   </ItemGroup>
 
 </Project>
