@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Reversi.GUI.Windows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1600" Background="WhiteSmoke">
+        Title="MainWindow" Height="1000" Width="1600"
+        WindowStyle="None" AllowsTransparency="True">
     <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
 </Window>
