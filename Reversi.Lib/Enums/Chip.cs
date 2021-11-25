@@ -2,8 +2,8 @@
 {
     public enum Chip
     {
+        Empty,
         White,
         Black,
-        Empty
     }
 }

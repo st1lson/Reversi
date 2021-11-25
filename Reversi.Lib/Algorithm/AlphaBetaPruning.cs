@@ -2,13 +2,18 @@
 
 namespace Reversi.Lib.Algorithm
 {
-    public class AlphaBetaPruning : IAlgorithm
+    public sealed class AlphaBetaPruning : IAlgorithm
     {
         private readonly Difficulty _difficulty;
 
         public AlphaBetaPruning(Difficulty difficulty)
         {
             _difficulty = difficulty;
+        }
+
+        public Chip[] Find(Chip[] board)
+        {
+            return default;
         }
     }
 }

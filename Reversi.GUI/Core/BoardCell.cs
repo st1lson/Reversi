@@ -12,7 +12,7 @@ namespace Reversi.GUI.Core
         public bool CanSelect
         {
             get => _canSelect;
-            set
+            private set
             {
                 _canSelect = value;
                 OnPropertyChanged();
@@ -22,8 +22,13 @@ namespace Reversi.GUI.Core
         public Chip Chip
         {
             get => _chip;
-            set
+            internal set
             {
+                if (CanSelect && value != Chip.Empty)
+                {
+                    CanSelect = false;
+                }
+
                 _chip = value;
                 OnPropertyChanged();
             }
