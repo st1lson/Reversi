@@ -1,4 +1,4 @@
-﻿using Reversi.GUI.Core.Enums;
+﻿using Reversi.Lib.Enums;
 using System;
 using System.Globalization;
 using System.Windows;

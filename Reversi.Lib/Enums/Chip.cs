@@ -1,4 +1,4 @@
-﻿namespace Reversi.GUI.Core.Enums
+﻿namespace Reversi.Lib.Enums
 {
     public enum Chip
     {

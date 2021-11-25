@@ -1,7 +1,6 @@
-﻿using Reversi.GUI.Core.Enums;
+﻿using Reversi.Lib.Enums;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Media.Imaging;
 
 namespace Reversi.GUI.Core
 {
@@ -9,7 +8,6 @@ namespace Reversi.GUI.Core
     {
         private bool _canSelect = true;
         private Chip _chip = Chip.Empty;
-        private BitmapImage _image = new();
 
         public bool CanSelect
         {
@@ -27,16 +25,6 @@ namespace Reversi.GUI.Core
             set
             {
                 _chip = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public BitmapImage Image
-        {
-            get => _image;
-            set
-            {
-                _image = value;
                 OnPropertyChanged();
             }
         }

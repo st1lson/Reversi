@@ -1,5 +1,4 @@
 ﻿using Reversi.GUI.Core;
-using Reversi.GUI.Core.Enums;
 using Reversi.Lib.Enums;
 using System.Windows;
 using System.Windows.Controls;

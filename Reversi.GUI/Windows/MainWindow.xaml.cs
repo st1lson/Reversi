@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Reversi.GUI.Pages;
+﻿using Reversi.GUI.Pages;
+using System.Windows;
 
 namespace Reversi.GUI.Windows
 {
