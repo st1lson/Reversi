@@ -10,12 +10,12 @@ namespace Reversi.Lib.Algorithm
         public AlphaBetaPruning(Difficulty difficulty)
         {
             _difficulty = difficulty;
-            _gameTree = new();
+            _gameTree = new GameTree<GameState>();
         }
 
         public Chip[,] Find(Chip[,] board)
         {
-            GameState bestState = _gameTree.GetTheBest(new(board), (int)_difficulty);
+            GameState bestState = _gameTree.GetTheBest(new(board), (int)_difficulty, maximize: true);
 
             return bestState.Board;
         }

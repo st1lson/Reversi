@@ -26,6 +26,7 @@ namespace Reversi.GUI.Pages
             Button button = (Button)sender;
             BoardCell currentCell = (BoardCell)button.DataContext;
             _board.AddCell(_board.Cells.IndexOf(currentCell), Chip.Black);
+            _alphaBetaPruning.Find(_board.Chips);
         }
 
         private static Board InitBoard()
