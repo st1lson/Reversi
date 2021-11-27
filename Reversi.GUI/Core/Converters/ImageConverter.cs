@@ -17,17 +17,13 @@ namespace Reversi.GUI.Core.Converters
                 throw new Exception();
             }
 
-            switch (value)
+            return value switch
             {
-                case Chip.Empty:
-                    return (BitmapImage)Application.Current.FindResource("Empty");
-                case Chip.White:
-                    return (BitmapImage)Application.Current.FindResource("White");
-                case Chip.Black:
-                    return (BitmapImage)Application.Current.FindResource("Black");
-                default:
-                    return (BitmapImage)Application.Current.FindResource("Empty");
-            }
+                Chip.Empty => (BitmapImage)Application.Current.FindResource("Empty"),
+                Chip.White => (BitmapImage)Application.Current.FindResource("White"),
+                Chip.Black => (BitmapImage)Application.Current.FindResource("Black"),
+                _ => (BitmapImage)Application.Current.FindResource("Empty"),
+            };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
