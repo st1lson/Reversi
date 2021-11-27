@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Reversi.Lib.Enums;
 
@@ -14,21 +15,14 @@ namespace Reversi.Lib.Algorithm
                 return default;
             }
 
-            T bestState = null;
+            T bestState = default;
             foreach (T child in children)
             {
-                int value = MiniMax(state, depth, maximize);
-                if (maximize && value > Calculate(child, maximize))
+                int value = MiniMax(state, depth - 1, maximize);
+                if (maximize && value > Calculate(child))
                 {
                     bestState = child;
                 }
-
-                if (!maximize && value < Calculate(child, maximize))
-                {
-                    bestState = child;
-                }
-
-                maximize = !maximize;
             }
 
             return bestState;
@@ -39,7 +33,7 @@ namespace Reversi.Lib.Algorithm
             List<GameState> children = state.GenerateChildren();
             if (depth == 0 || children.Count < 1)
             {
-                return Calculate(state, maximize);
+                return Calculate(state);
             }
 
             int value = maximize ? int.MinValue : int.MaxValue;
@@ -48,24 +42,20 @@ namespace Reversi.Lib.Algorithm
                 int nextStateValue = MiniMax(child, depth - 1, !maximize, alpha, beta);
                 if (maximize)
                 {
-                    if (nextStateValue > alpha)
-                    {
-                        value = alpha = nextStateValue;
-                    }
+                    value = Math.Max(value, nextStateValue);
+                    alpha = Math.Max(alpha, nextStateValue);
                 }
                 else
                 {
-                    if (nextStateValue < beta)
-                    {
-                        value = beta = nextStateValue;
-                    }
+                    value = Math.Min(value, nextStateValue);
+                    beta = Math.Min(beta, nextStateValue);
                 }
             }
 
             return value;
         }
 
-        private static int Calculate(T state, bool maximize)
+        private static int Calculate(T state)
         {
             int value = 0;
             foreach (Chip chip in state.Board)

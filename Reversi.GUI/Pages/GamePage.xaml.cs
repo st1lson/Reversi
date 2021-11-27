@@ -23,10 +23,15 @@ namespace Reversi.GUI.Pages
 
         private void CellClick(object sender, RoutedEventArgs e)
         {
+            MakeTurn();
             Button button = (Button)sender;
             BoardCell currentCell = (BoardCell)button.DataContext;
-            _board.AddCell(_board.Cells.IndexOf(currentCell), Chip.Black);
-            _alphaBetaPruning.Find(_board.Chips);
+            _board.AddCell(_board.Cells.IndexOf(currentCell), Chip.White);
+        }
+
+        private void MakeTurn()
+        {
+            _board.Chips = _alphaBetaPruning.Find(_board.Chips);
         }
 
         private static Board InitBoard()

@@ -8,7 +8,7 @@ namespace Reversi.Lib.Algorithm
     public class GameState
     {
         internal Chip[,] Board { get; set; }
-        private readonly List<GameState> _children;
+        private List<GameState> _children;
 
         public GameState(Chip[,] board)
         {
@@ -18,7 +18,7 @@ namespace Reversi.Lib.Algorithm
 
         internal List<GameState> GenerateChildren(Chip chip = Chip.White)
         {
-            _children.Clear();
+            _children = new List<GameState>();
             for (int i = 0; i < Board.GetLength(0); i++)
             {
                 for (int j = 0; j < Board.GetLength(1); j++)
@@ -51,15 +51,16 @@ namespace Reversi.Lib.Algorithm
         {
             int neighborPositionI = positionI;
             int neighborPositionJ = positionJ;
-            GetNeighborPosition(ref neighborPositionI, ref neighborPositionJ, move);
             Chip[,] nextState = new Chip[8, 8];
+            GetNeighborPosition(ref neighborPositionI, ref neighborPositionJ, move);
+            nextState[neighborPositionI, neighborPositionJ] = Chip.Black;
             Array.Copy(board, nextState, board.Length);
 
             while (neighborPositionI >= 0 && neighborPositionJ >= 0 && board[neighborPositionI, neighborPositionJ] != Chip.Black
                    && board[neighborPositionI, neighborPositionJ] != Chip.Empty)
             {
-                nextState[neighborPositionI, neighborPositionJ] = Chip.Black;
                 GetNeighborPosition(ref neighborPositionI, ref neighborPositionJ, move);
+                nextState[neighborPositionI, neighborPositionJ] = Chip.Black;
             }
 
             if (neighborPositionI == -1 || neighborPositionJ == -1 ||

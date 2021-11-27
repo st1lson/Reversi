@@ -52,14 +52,18 @@ namespace Reversi.GUI.Core
 
         private void OnChangeChips()
         {
-            for (int i = 0; i < Cells.Count; i++)
+            const int length = 8;
+            for (int i = 0; i < length; i++)
             {
-                if (_chips[i / Chips.GetLength(0), i % Chips.GetLength(1)].Equals(Cells[i].Chip))
+                for (int j = 0; j < length; j++)
                 {
-                    continue;
-                }
+                    if (_chips[i, j].Equals(Cells[(i * length) + j].Chip))
+                    {
+                        continue;
+                    }
 
-                Cells[i].Chip = _chips[i / Chips.GetLength(0), i % Chips.GetLength(1)];
+                    Cells[(i * length) + j].Chip = _chips[i, j];
+                }
             }
         }
     }
