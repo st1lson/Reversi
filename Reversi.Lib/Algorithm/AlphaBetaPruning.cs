@@ -13,7 +13,7 @@ namespace Reversi.Lib.Algorithm
             _gameTree = new GameTree<GameState>();
         }
 
-        public Chip[,] Find(Chip[,] board)
+        public Chip[] Find(Chip[] board)
         {
             GameState bestState = _gameTree.GetTheBest(new(board), (int)_difficulty, maximize: true);
 

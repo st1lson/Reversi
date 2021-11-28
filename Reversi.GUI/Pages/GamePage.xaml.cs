@@ -16,33 +16,24 @@ namespace Reversi.GUI.Pages
         {
             InitializeComponent();
             _difficulty = difficulty;
-            _board = InitBoard();
+            _board = new();
             _alphaBetaPruning = new(_difficulty);
             Board.ItemsSource = _board.Cells;
+            MakeTurn();
         }
 
         private void CellClick(object sender, RoutedEventArgs e)
         {
-            MakeTurn();
             Button button = (Button)sender;
             BoardCell currentCell = (BoardCell)button.DataContext;
             _board.AddCell(_board.Cells.IndexOf(currentCell), Chip.White);
+            MakeTurn();
         }
 
         private void MakeTurn()
         {
-            _board.Chips = _alphaBetaPruning.Find(_board.Chips);
-        }
-
-        private static Board InitBoard()
-        {
-            Board board = new();
-            for (int i = 0; i < 64; i++)
-            {
-                board.Cells.Add(new BoardCell());
-            }
-
-            return board;
+            Chip[] bestState = _alphaBetaPruning.Find(_board.Chips);
+            _board.Chips = bestState;
         }
     }
 }

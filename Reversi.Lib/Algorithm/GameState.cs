@@ -7,64 +7,57 @@ namespace Reversi.Lib.Algorithm
 {
     public class GameState
     {
-        internal Chip[,] Board { get; set; }
+        internal Chip[] Board { get; set; }
         private List<GameState> _children;
 
-        public GameState(Chip[,] board)
+        public GameState(Chip[] board)
         {
             Board = board;
             _children = new List<GameState>();
         }
 
-        internal List<GameState> GenerateChildren(Chip chip = Chip.White)
+        internal List<GameState> GenerateChildren(Chip attacker = Chip.Black)
         {
             _children = new List<GameState>();
-            for (int i = 0; i < Board.GetLength(0); i++)
+            for (int i = 0; i < Board.Length; i++)
             {
-                for (int j = 0; j < Board.GetLength(1); j++)
+                if (Board[i] != attacker)
                 {
-                    if (Board[i, j] != chip)
-                    {
-                        continue;
-                    }
-
-                    CheckNeighbors(Board, i, j);
+                    continue;
                 }
+
+                CheckNeighbors(Board, i, attacker);
             }
 
             return _children;
         }
 
-        private void CheckNeighbors(Chip[,] board, int positionI, int positionJ)
+        private void CheckNeighbors(Chip[] board, int cellIndex, Chip attacker)
         {
-            Neighbor(board, positionI, positionJ, Move.Up);
-            Neighbor(board, positionI, positionJ, Move.Down);
-            Neighbor(board, positionI, positionJ, Move.Right);
-            Neighbor(board, positionI, positionJ, Move.Left);
-            Neighbor(board, positionI, positionJ, Move.UpRight);
-            Neighbor(board, positionI, positionJ, Move.UpLeft);
-            Neighbor(board, positionI, positionJ, Move.DownRight);
-            Neighbor(board, positionI, positionJ, Move.DownLeft);
+            Neighbor(board, cellIndex, Move.Up, attacker);
+            Neighbor(board, cellIndex, Move.Down, attacker);
+            Neighbor(board, cellIndex, Move.Right, attacker);
+            Neighbor(board, cellIndex, Move.Left, attacker);
+            Neighbor(board, cellIndex, Move.UpLeft, attacker);
+            Neighbor(board, cellIndex, Move.UpRight, attacker);
+            Neighbor(board, cellIndex, Move.DownRight, attacker);
+            Neighbor(board, cellIndex, Move.DownLeft, attacker);
         }
 
-        private void Neighbor(Chip[,] board, int positionI, int positionJ, Move move)
+        private void Neighbor(Chip[] board, int cellIndex, Move move, Chip attacker)
         {
-            int neighborPositionI = positionI;
-            int neighborPositionJ = positionJ;
-            Chip[,] nextState = new Chip[8, 8];
-            GetNeighborPosition(ref neighborPositionI, ref neighborPositionJ, move);
-            nextState[neighborPositionI, neighborPositionJ] = Chip.Black;
+            Chip[] nextState = new Chip[64];
+            int neighborIndex = GetNeighborPosition(cellIndex, move);
+            nextState[neighborIndex] = Chip.Black;
             Array.Copy(board, nextState, board.Length);
 
-            while (neighborPositionI >= 0 && neighborPositionJ >= 0 && board[neighborPositionI, neighborPositionJ] != Chip.Black
-                   && board[neighborPositionI, neighborPositionJ] != Chip.Empty)
+            while (neighborIndex >= 0 && board[neighborIndex] != attacker && board[neighborIndex] != Chip.Empty)
             {
-                GetNeighborPosition(ref neighborPositionI, ref neighborPositionJ, move);
-                nextState[neighborPositionI, neighborPositionJ] = Chip.Black;
+                nextState[neighborIndex] = Chip.Black;
+                neighborIndex = GetNeighborPosition(neighborIndex, move);
             }
 
-            if (neighborPositionI == -1 || neighborPositionJ == -1 ||
-                board[neighborPositionI, neighborPositionJ] == Chip.Black)
+            if (neighborIndex == -1 || nextState[neighborIndex] == Chip.Black)
             {
                 return;
             }
@@ -77,40 +70,28 @@ namespace Reversi.Lib.Algorithm
             _children.Add(new GameState(nextState));
         }
 
-        private static void GetNeighborPosition(ref int neighborPositionI, ref int neighborPositionJ, Move move)
+        private static int GetNeighborPosition(int cellIndex, Move move)
         {
             switch (move)
             {
                 case Move.Up:
-                    neighborPositionI -= 1;
-                    return;
+                    return cellIndex >= 8 ? cellIndex - 8 : -1;
                 case Move.Down:
-                    neighborPositionI += 1;
-                    return;
+                    return cellIndex + 8 < 64 ? cellIndex + 8 : -1;
                 case Move.Right:
-                    neighborPositionJ += 1;
-                    return;
+                    return Math.Floor((double)(cellIndex / 8)) == Math.Floor((double)(cellIndex + 1) / 8) ? cellIndex + 1 : -1;
                 case Move.Left:
-                    neighborPositionJ -= 1;
-                    return;
+                    return Math.Floor((double)(cellIndex / 8)) == Math.Floor((double)(cellIndex - 1) / 8) ? cellIndex - 1 : -1;
                 case Move.UpRight:
-                    neighborPositionI -= 1;
-                    neighborPositionJ += 1;
-                    return;
+                    return GetNeighborPosition(GetNeighborPosition(cellIndex, Move.Right), Move.Up);
                 case Move.UpLeft:
-                    neighborPositionI -= 1;
-                    neighborPositionJ -= 1;
-                    return;
+                    return GetNeighborPosition(GetNeighborPosition(cellIndex, Move.Left), Move.Up);
                 case Move.DownRight:
-                    neighborPositionI += 1;
-                    neighborPositionJ += 1;
-                    return;
+                    return GetNeighborPosition(GetNeighborPosition(cellIndex, Move.Right), Move.Down);
                 case Move.DownLeft:
-                    neighborPositionI += 1;
-                    neighborPositionJ -= 1;
-                    return;
+                    return GetNeighborPosition(GetNeighborPosition(cellIndex, Move.Left), Move.Down);
                 default:
-                    return;
+                    return -1;
             }
         }
     }

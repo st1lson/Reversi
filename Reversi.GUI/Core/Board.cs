@@ -8,8 +8,8 @@ namespace Reversi.GUI.Core
         public int Rows { get; internal set; }
         public int Columns { get; internal set; }
         public ObservableCollection<BoardCell> Cells { get; }
-        private Chip[,] _chips;
-        public Chip[,] Chips
+        private Chip[] _chips;
+        public Chip[] Chips
         {
             get => _chips;
             internal set
@@ -27,14 +27,14 @@ namespace Reversi.GUI.Core
         public Board()
         {
             Cells = new();
-            _chips = new Chip[8, 8];
+            _chips = new Chip[64];
 
             InitializeBoard();
         }
 
         public void AddCell(int id, Chip chip)
         {
-            Cells[id].Chip = Chips[id / Chips.GetLength(0), id % Chips.GetLength(1)] = chip;
+            Cells[id].Chip = Chips[id] = chip;
         }
 
         private void InitializeBoard()
@@ -44,26 +44,22 @@ namespace Reversi.GUI.Core
                 Cells.Add(new BoardCell());
             }
 
-            Cells[27].Chip = Chips[3, 4] = Chip.Black;
-            Cells[28].Chip = Chips[3, 5] = Chip.White;
-            Cells[35].Chip = Chips[4, 4] = Chip.White;
-            Cells[36].Chip = Chips[4, 5] = Chip.Black;
+            Cells[27].Chip = Chips[27] = Chip.Black;
+            Cells[28].Chip = Chips[28] = Chip.White;
+            Cells[35].Chip = Chips[35] = Chip.White;
+            Cells[36].Chip = Chips[36] = Chip.Black;
         }
 
         private void OnChangeChips()
         {
-            const int length = 8;
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < _chips.Length; i++)
             {
-                for (int j = 0; j < length; j++)
+                if (_chips[i].Equals(Cells[i].Chip))
                 {
-                    if (_chips[i, j].Equals(Cells[(i * length) + j].Chip))
-                    {
-                        continue;
-                    }
-
-                    Cells[(i * length) + j].Chip = _chips[i, j];
+                    continue;
                 }
+
+                Cells[i].Chip = _chips[i];
             }
         }
     }
