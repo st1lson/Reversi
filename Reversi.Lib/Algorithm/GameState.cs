@@ -8,17 +8,17 @@ namespace Reversi.Lib.Algorithm
     public class GameState
     {
         internal Chip[] Board { get; set; }
-        private List<GameState> _children;
+        private Dictionary<int, GameState> _children;
 
         public GameState(Chip[] board)
         {
             Board = board;
-            _children = new List<GameState>();
+            _children = new Dictionary<int, GameState>();
         }
 
-        internal List<GameState> GenerateChildren(Chip attacker = Chip.Black)
+        internal Dictionary<int, GameState> GenerateChildren(Chip attacker = Chip.Black)
         {
-            _children = new List<GameState>();
+            _children = new Dictionary<int, GameState>();
             for (int i = 0; i < Board.Length; i++)
             {
                 if (Board[i] != attacker)
@@ -48,26 +48,49 @@ namespace Reversi.Lib.Algorithm
         {
             Chip[] nextState = new Chip[64];
             int neighborIndex = GetNeighborPosition(cellIndex, move);
-            nextState[neighborIndex] = Chip.Black;
-            Array.Copy(board, nextState, board.Length);
+            if (neighborIndex >= 64)
+            {
+                return;
+            }
 
+            Array.Copy(board, nextState, board.Length);
             while (neighborIndex >= 0 && board[neighborIndex] != attacker && board[neighborIndex] != Chip.Empty)
             {
-                nextState[neighborIndex] = Chip.Black;
+                nextState[neighborIndex] = attacker;
                 neighborIndex = GetNeighborPosition(neighborIndex, move);
             }
 
-            if (neighborIndex == -1 || nextState[neighborIndex] == Chip.Black)
+            if (neighborIndex == -1 || board[neighborIndex] == attacker || board.SequenceEqual(nextState))
             {
                 return;
             }
 
-            if (_children.Count(p => p.Board == nextState) > 0)
+            nextState[neighborIndex] = attacker;
+            if (_children.ContainsKey(neighborIndex))
             {
-                return;
-            };
+                _children[neighborIndex].Board = Union(_children[neighborIndex].Board, nextState);
+            }
+            else
+            {
+                _children.Add(neighborIndex, new GameState(nextState));
+            }
+        }
 
-            _children.Add(new GameState(nextState));
+        private static Chip[] Union(Chip[] a, Chip[] b)
+        {
+            Chip[] board = new Chip[64];
+            for (int i = 0; i < board.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    board[i] = b[i];
+                    continue;
+                }
+
+                board[i] = a[i];
+            }
+
+            return board;
         }
 
         private static int GetNeighborPosition(int cellIndex, Move move)

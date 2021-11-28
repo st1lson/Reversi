@@ -3,7 +3,7 @@
     public enum Difficulty
     {
         Easy = 2,
-        Medium = 4,
-        Hard = 6
+        Medium = 3,
+        Hard = 4
     }
 }

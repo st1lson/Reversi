@@ -1,4 +1,6 @@
-﻿using Reversi.GUI.Core;
+﻿using System.Collections;
+using System.Linq;
+using Reversi.GUI.Core;
 using Reversi.Lib.Algorithm;
 using Reversi.Lib.Enums;
 using System.Windows;
