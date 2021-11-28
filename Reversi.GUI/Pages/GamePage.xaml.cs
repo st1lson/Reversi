@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
-using Reversi.GUI.Core;
+﻿using Reversi.GUI.Core;
 using Reversi.Lib.Algorithm;
 using Reversi.Lib.Enums;
 using System.Windows;
@@ -11,7 +9,7 @@ namespace Reversi.GUI.Pages
     public partial class GamePage : Page
     {
         private readonly Difficulty _difficulty;
-        private readonly AlphaBetaPruning _alphaBetaPruning;
+        private AlphaBetaPruning _alphaBetaPruning;
         private readonly Board _board;
 
         public GamePage(Difficulty difficulty)
@@ -34,8 +32,12 @@ namespace Reversi.GUI.Pages
 
         private void MakeTurn()
         {
-            Chip[] bestState = _alphaBetaPruning.Find(_board.Chips);
-            _board.Chips = bestState;
+            int bestState = _alphaBetaPruning.Find(_board.Chips);
+            if (bestState == -1)
+            {
+                return;
+            }
+            _board.AddCell(bestState, Chip.Black);
         }
     }
 }

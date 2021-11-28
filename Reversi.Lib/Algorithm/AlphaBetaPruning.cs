@@ -1,23 +1,24 @@
 ﻿using Reversi.Lib.Enums;
+using System.Linq;
 
 namespace Reversi.Lib.Algorithm
 {
     public sealed class AlphaBetaPruning
     {
         private readonly Difficulty _difficulty;
-        private readonly GameTree<GameState> _gameTree;
 
         public AlphaBetaPruning(Difficulty difficulty)
         {
             _difficulty = difficulty;
-            _gameTree = new GameTree<GameState>();
         }
 
-        public Chip[] Find(Chip[] board)
+        public int Find(Chip[] board)
         {
-            GameState bestState = _gameTree.GetTheBest(new(board), (int)_difficulty, maximize: true);
+            GameState gameState = new GameState(board);
+            GameTree<GameState> gameTree = new GameTree<GameState>();
+            GameState bestState = gameTree.GetTheBest(gameState, (int)_difficulty, true);
 
-            return bestState.Board;
+            return bestState != null ? gameState.Children.FirstOrDefault(x => x.Value.Board.SequenceEqual(bestState.Board)).Key : -1;
         }
     }
 }

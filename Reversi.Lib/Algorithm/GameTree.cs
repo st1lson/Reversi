@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Reversi.Lib.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Reversi.Lib.Enums;
 
 namespace Reversi.Lib.Algorithm
 {
@@ -10,7 +10,7 @@ namespace Reversi.Lib.Algorithm
         public T GetTheBest(T state, int depth, bool maximize)
         {
             Dictionary<int, GameState> children = state.GenerateChildren();
-            if (children.Count < 1)
+            if (children.Count == 0)
             {
                 return default;
             }
@@ -64,20 +64,34 @@ namespace Reversi.Lib.Algorithm
 
         private static int Calculate(T state)
         {
-            int a = 0;
-            int b = 0;
-            foreach (Chip chip in state.Board)
+            int blackScore = state.GetScore(Chip.Black);
+            int whiteScore = state.GetScore(Chip.White);
+            if (blackScore == 0)
             {
-                if (chip != Chip.Black)
-                {
-                    b++;
-                    continue;
-                }
-
-                a++;
+                return int.MinValue;
+            }
+            else if (whiteScore == 0)
+            {
+                return int.MaxValue;
             }
 
-            return a - b;
+            if (blackScore + whiteScore == 64)
+            {
+                if (blackScore < whiteScore)
+                {
+                    return int.MinValue;
+                }
+                else if (blackScore > whiteScore)
+                {
+                    return int.MaxValue;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+            return blackScore - whiteScore;
         }
     }
 }
