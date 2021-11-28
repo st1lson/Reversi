@@ -37,7 +37,7 @@ namespace Reversi.Lib.Algorithm
         private int MiniMax(T state, int depth, bool maximize, int alpha = int.MinValue, int beta = int.MaxValue, Chip player = Chip.Black)
         {
             Dictionary<int, GameState> children = state.GenerateChildren(player);
-            if (depth == 0 || children.Count < 1)
+            if (depth <= 0 || children.Count < 1)
             {
                 return Calculate(state);
             }
@@ -56,6 +56,11 @@ namespace Reversi.Lib.Algorithm
                 {
                     value = Math.Min(value, nextStateValue);
                     beta = Math.Min(beta, nextStateValue);
+                }
+
+                if (beta <= alpha)
+                {
+                    break;
                 }
             }
 
